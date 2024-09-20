@@ -1,16 +1,10 @@
-package com.mycompany.app;
-import java.util.Random;
+```
+import java.security.SecureRandom;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        Random rand = new Random();
-        System.out.println(rand.nextInt(50));
-        System.out.println( "Hello World!" );
-    }
+public class MySecureClass {
+  public void doSecureStuff() {
+    SecureRandom random = new SecureRandom();
+    // Use o objeto SecureRandom para suas necessidades
+  }
 }
+```
