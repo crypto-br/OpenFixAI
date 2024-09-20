@@ -1,6 +1,6 @@
 # OpenFixAI
 
-Uma ferramenta que automatiza a correção de vulnerabilidades identificadas pelo Horusec, utilizando o OpenAI GPT-4 para sugerir correções, gerando relatórios HTML aprimorados com CSS e criando pull requests no GitHub com as alterações propostas.
+Uma ferramenta que automatiza a correção de vulnerabilidades identificadas pelo Horusec, utilizando o OpenAI GPT-4 para sugerir correções, gerando relatório e criando pull requests no GitHub com as alterações propostas.
 
 ## Sumário
 
