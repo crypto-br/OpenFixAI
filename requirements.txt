@@ -1,0 +1,4 @@
+openai
+PyGithub
+python-dotenv
+markdown

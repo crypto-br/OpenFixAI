@@ -1,0 +1,120 @@
+
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <title>Relatório de Vulnerabilidades</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f9f9f9;
+                margin: 0;
+                padding: 0;
+            }
+            header {
+                background-color: #343a40;
+                color: #fff;
+                padding: 20px;
+                text-align: center;
+            }
+            .container {
+                margin: 20px auto;
+                max-width: 1200px;
+                padding: 20px;
+                background-color: #fff;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            h1 {
+                color: #343a40;
+            }
+            .vulnerability {
+                border-bottom: 1px solid #ddd;
+                padding: 20px 0;
+            }
+            .vulnerability:last-child {
+                border-bottom: none;
+            }
+            h2 {
+                color: #dc3545;
+                margin-top: 0;
+            }
+            pre {
+                background: #f1f1f1;
+                padding: 15px;
+                overflow: auto;
+                border-radius: 5px;
+            }
+            .details, .code, .suggestion {
+                margin-bottom: 20px;
+            }
+            .details p, .code p, .suggestion p {
+                margin: 5px 0;
+            }
+            .label {
+                font-weight: bold;
+                color: #343a40;
+            }
+            footer {
+                text-align: center;
+                padding: 20px;
+                background-color: #343a40;
+                color: #fff;
+                margin-top: 40px;
+            }
+            a {
+                color: #007bff;
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            @media (max-width: 768px) {
+                .container {
+                    margin: 10px;
+                    padding: 15px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Relatório de Vulnerabilidades</h1>
+        </header>
+        <div class="container">
+    
+        <div class="vulnerability">
+            <h2>Vulnerabilidade 1</h2>
+            <div class="details">
+                <p class="label">Detalhes:</p>
+                <p>(1/1) * Possible vulnerability detected: Insecure Random Number Generator</p>
+            </div>
+            <div class="code">
+                <p class="label">Código Vulnerável:</p>
+                <pre><code>import java.util.Random;</code></pre>
+            </div>
+            <div class="suggestion">
+                <p class="label">Sugestão de Correção:</p>
+                <p>A vulnerabilidade indica um uso inseguro do gerador de números aleatórios da classe <code>java.util.Random</code>. Esta classe não é aconselhável para usos onde a segurança é necessária, como a geração de senhas ou criptografia, como os números gerados podem ser preditos e, assim, tornarem-se uma brecha de segurança.</p>
+<p>Para corrigir essa vulnerabilidade, você deve usar <code>java.security.SecureRandom</code> em vez de <code>java.util.Random</code>. O <code>SecureRandom</code> é aconselhável para usos onde a segurança é um requisito e é projetado para ser menos previsível.</p>
+<p>Aqui está um exemplo de como você pode usá-lo:</p>
+<p>```
+import java.security.SecureRandom;</p>
+<p>public class MySecureClass {
+  public void doSecureStuff() {
+    SecureRandom random = new SecureRandom();
+    // Use o objeto SecureRandom para suas necessidades
+  }
+}
+```</p>
+<p>Esse código irá instanciar um objeto <code>SecureRandom</code> que você pode usar da mesma forma que você usaria um objeto <code>Random</code>, mas com uma segurança aprimorada.</p>
+<p>Lembre-se sempre de que, quando a segurança é uma preocupação, as classes de utilitários de segurança, como <code>SecureRandom</code>, devem ser usadas em vez de classes de uso geral, como <code>Random</code>.</p>
+            </div>
+        </div>
+        
+        </div>
+        <footer>
+            <p>Gerado por OpenFixAI</p>
+        </footer>
+    </body>
+    </html>
+    

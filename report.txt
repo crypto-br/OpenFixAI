@@ -1,0 +1,49 @@
+[33mWARN[0m[0000] {HORUSEC_CLI} Config file not found          
+[33mWARN[0m[0000] {HORUSEC_CLI} When starting the analysis WE SKIP A TOTAL OF 45 FILES that are not considered to be analyzed. To see more details use flag --log-level=debug 
+
+[33mWARN[0m[0000] Horusec will return a timeout after 600 seconds. This time can be customized in the cli settings. 
+
+[33mWARN[0m[0000] {HORUSEC_CLI} PLEASE DON'T REMOVE ".horusec" FOLDER BEFORE THE ANALYSIS FINISH! Don’t worry, we’ll remove it after the analysis ends automatically! Project sent to folder in location: [/src/.horusec/9e43e97c-b30a-439b-bc41-919731e2a6f4] 
+
+[K[37m⣾[0m Scanning code ...[K
+
+==================================================================================
+
+HORUSEC ENDED THE ANALYSIS WITH STATUS OF "success" AND WITH THE FOLLOWING RESULTS:
+
+==================================================================================
+
+Analysis StartedAt: 2024-08-10 17:12:14
+Analysis FinishedAt: 2024-08-10 17:12:14
+
+==================================================================================
+
+Language: Java
+Severity: HIGH
+Line: 2
+Column: 7
+SecurityTool: HorusecEngine
+Confidence: LOW
+File: java/example1/src/.horusec/9e43e97c-b30a-439b-bc41-919731e2a6f4/main/java/com/mycompany/app/App.java
+Code: import java.util.Random;
+RuleID: HS-JAVA-114
+Type: Vulnerability
+ReferenceHash: 3f088bb0ca717dd7acb173ee8e3dee153ceb8e04f696815eb43e666c970ead11
+Details: (1/1) * Possible vulnerability detected: Insecure Random Number Generator
+The App uses an insecure Random Number Generator. For more information checkout the CWE-330 (https://cwe.mitre.org/data/definitions/330.html) advisory.
+
+==================================================================================
+
+In this analysis, a total of 1 possible vulnerabilities were found and we classified them into:
+Total of Vulnerability HIGH is: 1
+
+==================================================================================
+
+
+[33mWARN[0m[0000] {HORUSEC_CLI} No authorization token was found, your code it is not going to be sent to horusec. Please enter a token with the -a flag to configure and save your analysis 
+
+[33mWARN[0m[0000] {HORUSEC_CLI} 1 VULNERABILITIES WERE FOUND IN YOUR CODE SENT TO HORUSEC, TO SEE MORE DETAILS USE THE LOG LEVEL AS DEBUG AND TRY AGAIN 
+
+[33mWARN[0m[0000] {HORUSEC_CLI} Horusec not show info vulnerabilities in this analysis, to see info vulnerabilities add option "--information-severity=true". For more details use (horusec start --help) command. 
+Error: analysis finished with blocking vulnerabilities
+
