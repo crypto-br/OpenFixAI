@@ -18,7 +18,7 @@ Uma ferramenta que automatiza a correção de vulnerabilidades identificadas pel
 
 ## Visão Geral
 
-O **Horusec Vulnerability Auto-Fixer** é uma ferramenta que automatiza o processo de identificação e correção de vulnerabilidades em projetos de código aberto ou privado. Ele integra o scanner de segurança Horusec com a API da OpenAI para gerar sugestões de correção, cria relatórios HTML estilizados e abre pull requests automaticamente no GitHub com as correções propostas.
+O **OpenFixAI** é uma ferramenta que automatiza o processo de identificação e correção de vulnerabilidades em projetos de código aberto ou privado. Ele integra o scanner de segurança Horusec com a API da OpenAI para gerar sugestões de correção, cria relatórios HTML estilizados e abre pull requests automaticamente no GitHub com as correções propostas.
 
 ## Recursos
 
