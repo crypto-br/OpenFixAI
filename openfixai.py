@@ -68,7 +68,7 @@ def consultar_openai(vulnerabilidade):
         return "Erro ao gerar sugestão de correção."
 
 def gerar_relatorio_html(vulnerabilidades):
-    """Gera um relatório em HTML das vulnerabilidades."""
+    """Gera um relatório em HTML das vulnerabilidades com CSS aprimorado."""
     html = """
     <!DOCTYPE html>
     <html lang="pt-BR">
@@ -76,35 +76,115 @@ def gerar_relatorio_html(vulnerabilidades):
         <meta charset="UTF-8">
         <title>Relatório de Vulnerabilidades</title>
         <style>
-            body { font-family: Arial, sans-serif; margin: 20px; }
-            h2 { color: #2F4F4F; }
-            pre { background: #f4f4f4; padding: 10px; border: 1px solid #ddd; }
-            .vulnerability { margin-bottom: 20px; }
-            hr { border: 0; height: 1px; background: #ddd; margin-top: 20px; margin-bottom: 20px; }
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f9f9f9;
+                margin: 0;
+                padding: 0;
+            }
+            header {
+                background-color: #343a40;
+                color: #fff;
+                padding: 20px;
+                text-align: center;
+            }
+            .container {
+                margin: 20px auto;
+                max-width: 1200px;
+                padding: 20px;
+                background-color: #fff;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            h1 {
+                color: #343a40;
+            }
+            .vulnerability {
+                border-bottom: 1px solid #ddd;
+                padding: 20px 0;
+            }
+            .vulnerability:last-child {
+                border-bottom: none;
+            }
+            h2 {
+                color: #dc3545;
+                margin-top: 0;
+            }
+            pre {
+                background: #f1f1f1;
+                padding: 15px;
+                overflow: auto;
+                border-radius: 5px;
+            }
+            .details, .code, .suggestion {
+                margin-bottom: 20px;
+            }
+            .details p, .code p, .suggestion p {
+                margin: 5px 0;
+            }
+            .label {
+                font-weight: bold;
+                color: #343a40;
+            }
+            footer {
+                text-align: center;
+                padding: 20px;
+                background-color: #343a40;
+                color: #fff;
+                margin-top: 40px;
+            }
+            a {
+                color: #007bff;
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            @media (max-width: 768px) {
+                .container {
+                    margin: 10px;
+                    padding: 15px;
+                }
+            }
         </style>
     </head>
     <body>
-        <h1>Relatório de Vulnerabilidades</h1>
+        <header>
+            <h1>Relatório de Vulnerabilidades</h1>
+        </header>
+        <div class="container">
     """
 
-    for vulnerabilidade in vulnerabilidades:
+    for idx, vulnerabilidade in enumerate(vulnerabilidades, 1):
         detalhes = vulnerabilidade.get('details', 'Detalhes não encontrados')
         codigo = vulnerabilidade.get('code', 'Código não encontrado')
         sugestao = vulnerabilidade.get('sugestao', 'Sugestão não disponível')
 
+        # Convertendo a sugestão de Markdown para HTML
+        sugestao_html = markdown.markdown(sugestao)
+
         html += f"""
         <div class="vulnerability">
-            <h2>Vulnerabilidade Encontrada</h2>
-            <p><strong>Detalhes:</strong> {detalhes}</p>
-            <p><strong>Código Vulnerável:</strong></p>
-            <pre>{codigo}</pre>
-            <p><strong>Sugestão de Correção:</strong></p>
-            <pre>{markdown.markdown(sugestao)}</pre>
+            <h2>Vulnerabilidade {idx}</h2>
+            <div class="details">
+                <p class="label">Detalhes:</p>
+                <p>{detalhes}</p>
+            </div>
+            <div class="code">
+                <p class="label">Código Vulnerável:</p>
+                <pre><code>{codigo}</code></pre>
+            </div>
+            <div class="suggestion">
+                <p class="label">Sugestão de Correção:</p>
+                {sugestao_html}
+            </div>
         </div>
-        <hr>
         """
 
     html += """
+        </div>
+        <footer>
+            <p>Gerado por OpenFixAI</p>
+        </footer>
     </body>
     </html>
     """
@@ -123,11 +203,13 @@ def extrair_codigo_corrigido(sugestao):
         print(f"Erro ao extrair código corrigido: {e}")
         return None
 
-def create_pull_request(code_pr, detalhes, cleaned_path):
+def create_pull_request(code_pr, detalhes, file_path):
     """Cria um pull request no GitHub com a correção proposta."""
-    if not code_pr or not cleaned_path:
+    if not code_pr or not file_path:
         print("Código ou caminho inválido, PR não criado.")
         return None
+
+    cleaned_path = re.sub(r'\.horusec/[0-9a-fA-F-]+/', '', file_path)
 
     try:
         # Autenticação
@@ -136,7 +218,11 @@ def create_pull_request(code_pr, detalhes, cleaned_path):
 
         # Criar um novo branch para a correção
         main_branch = repo.get_branch('main')
-        repo.create_git_ref(ref=f'refs/heads/{BRANCH_NAME}', sha=main_branch.commit.sha)
+        try:
+            repo.create_git_ref(ref=f'refs/heads/{BRANCH_NAME}', sha=main_branch.commit.sha)
+            print(f"Branch criado: {BRANCH_NAME}")
+        except Exception as e:
+            print(f"Branch {BRANCH_NAME} já existe ou erro ao criar o branch: {e}")
 
         # Obter o arquivo atual do repositório
         file = repo.get_contents(cleaned_path, ref=BRANCH_NAME)
@@ -149,15 +235,13 @@ def create_pull_request(code_pr, detalhes, cleaned_path):
             sha=file.sha,
             branch=BRANCH_NAME
         )
-
         # Criar um pull request
         pr = repo.create_pull(
-            title='Correção de código',
+            title=f'Correção de código {file}',
             body=detalhes,
             head=BRANCH_NAME,
             base='main'
         )
-
         print(f"Pull Request criado: {pr.html_url}")
         return pr.html_url
     except Exception as e:
@@ -183,9 +267,8 @@ def main():
 
         code_pr = extrair_codigo_corrigido(sugestao)
         file_path = vulnerabilidade.get('file')
-        cleaned_path = re.sub(r'\.horusec/[0-9a-fA-F-]+/', '', file_path) if file_path else None
 
-        create_pull_request(code_pr, detalhes, cleaned_path)
+        create_pull_request(code_pr, detalhes, file_path)
 
     relatorio_html = gerar_relatorio_html(vulnerabilidades)
     try:
